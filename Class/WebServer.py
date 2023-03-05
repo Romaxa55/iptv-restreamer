@@ -8,7 +8,6 @@ from aiohttp import web
 from aiohttp_session import setup, get_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from Class.Streamer import Streamer
-import asyncio
 
 
 class WebServer:
@@ -29,9 +28,6 @@ class WebServer:
             'key': request.match_info.get("key", ""),
             'path': request.path
         }
-        headers = {
-            "Content-Type": "application/x-mpegURL"
-        }
 
         Streamer(**iptv)
 
@@ -44,11 +40,7 @@ class WebServer:
 
     @staticmethod
     async def videoFiles(request: web.Request) -> web.FileResponse:
-        headers = {
-            "Content-Type": "video/mp2t",
-            "Connection": "keep-alive"
-            }
-        print(f"Requst url: {request.path}")
+        print(f"Request url: {request.path}")
         file = Path(f"tmp{request.path}")
         t_end = time.time() + 10
         while time.time() < t_end:
