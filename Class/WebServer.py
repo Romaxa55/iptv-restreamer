@@ -1,5 +1,5 @@
 import threading
-
+from pathlib import Path
 import aiohttp_jinja2
 import jinja2
 import time
@@ -34,7 +34,13 @@ class WebServer:
         }
 
         Streamer(**iptv)
-        return web.FileResponse(f"tmp{request.path[:-10]}hls_out.m3u8")
+
+        m3u_file = Path(f"tmp{request.path[:-10]}hls_out.m3u8")
+        t_end = time.time() + 60
+        while time.time() < t_end:
+            if m3u_file.exists():
+                return web.FileResponse(m3u_file)
+        return web.FileResponse(m3u_file)
 
     @staticmethod
     async def videoFiles(request: web.Request) -> web.FileResponse:
@@ -42,7 +48,13 @@ class WebServer:
             "Content-Type": "video/mp2t",
             "Connection": "keep-alive"
             }
-        return web.FileResponse(f"tmp{request.path}")
+        print(f"Requst url: {request.path}")
+        file = Path(f"tmp{request.path}")
+        t_end = time.time() + 10
+        while time.time() < t_end:
+            if file.exists():
+                return web.FileResponse(file)
+        return web.FileResponse(file)
 
     @staticmethod
     async def handle_404(request):
