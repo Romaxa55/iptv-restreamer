@@ -1,0 +1,9 @@
+{
+  "webserver": {
+    "host": "localhost",
+    "port": 8000
+  },
+  "iptv": {
+    "host": "http://romaxa55.otttv.pw"
+  }
+}
