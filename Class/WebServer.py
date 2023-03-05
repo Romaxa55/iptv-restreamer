@@ -1,3 +1,5 @@
+import threading
+
 import aiohttp_jinja2
 import jinja2
 import time
@@ -6,6 +8,7 @@ from aiohttp import web
 from aiohttp_session import setup, get_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from Class.Streamer import Streamer
+import asyncio
 
 
 class WebServer:
@@ -17,7 +20,7 @@ class WebServer:
         self.port = kwargs['webserver']['port']
         self.iptv = {'host': kwargs['iptv']['host']}
 
-    async def startStream(self, request: web.Request) -> web.Response:
+    async def startStream(self, request: web.Request) -> web.FileResponse:
         session = await get_session(request)
         session['last_visit'] = time.time()
         iptv = {
@@ -29,11 +32,9 @@ class WebServer:
         headers = {
             "Content-Type": "application/x-mpegURL"
         }
-        await Streamer(**iptv).runStream()
-        with open(f"{self.tmp}hls_out.m3u8", 'rb') as f:
-            s = f.read().decode("utf-8")
-        return web.Response(text=s,
-                            headers=headers)
+
+        Streamer(**iptv)
+        return web.FileResponse(f"tmp{request.path[:-10]}hls_out.m3u8")
 
     @staticmethod
     async def videoFiles(request: web.Request) -> web.FileResponse:
