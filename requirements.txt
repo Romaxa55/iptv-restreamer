@@ -8,3 +8,4 @@ pyzmq
 msgpack
 msgpack_numpy
 uvloop
+aiohttp_jinja2
