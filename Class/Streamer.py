@@ -59,12 +59,10 @@ class Streamer(object):
 
         stream_params = {
             "-streams": [
-                {"-resolution": "1280x720", "-video_bitrate": "1000k", "-c:a": "copy"},
-                {"-resolution": "1280x720", "-video_bitrate": "256k", "-c:a": "copy"},
+                {"-resolution": "1280x720", "-video_bitrate": "1000k"},
+                {"-resolution": "1280x720", "-video_bitrate": "256k"},
                          ],
             "-input_framerate": stream.framerate,
-            "-ac": "2",
-            "-ar": "48000",
             "-livestream": True
         }
 
