@@ -1,4 +1,3 @@
-import threading
 from pathlib import Path
 import aiohttp_jinja2
 import jinja2
@@ -91,8 +90,10 @@ class WebServer:
             503: self.handle_500,
         })
         self.app.middlewares.append(error_middleware)
+        self.app.router.add_get('/iptv/{key}/{id}/stream_{steram:[\d]+}.m3u8', self.videoFiles)
         self.app.router.add_get('/iptv/{key}/{id}/index.m3u8', self.startStream)
         self.app.router.add_get('/iptv/{key}/{id}/chunk-stream-{num_video:\d+}.ts', self.videoFiles)
+        self.app.router.add_get('/iptv/{key}/{id}/chunk-stream{stream:[\d]+}-{num_video:\d+}.ts', self.videoFiles)
 
         aiohttp_jinja2.setup(self.app,
                              loader=jinja2.FileSystemLoader('html/'))

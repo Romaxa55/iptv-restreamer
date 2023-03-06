@@ -3,7 +3,7 @@ import shutil
 import threading
 import time
 from os import makedirs
-from vidgear.gears import CamGear
+from vidgear.gears import CamGear, WriteGear
 from vidgear.gears import StreamGear
 from pathlib import Path
 
@@ -53,20 +53,22 @@ class Streamer(object):
         global SIGINT
         global last_time
         print("Start ", stream_id)
-        stream = CamGear(self.url_path).start()
+        stream = CamGear(self.url_path, logging=True, time_delay=0).start()
         if not os.path.exists(self.tmp):
             makedirs(self.tmp)
+
         stream_params = {
             "-streams": [
-                {"-resolution": "1920x1080", "-video_bitrate": "4000k"},  # Stream1: 1920x1080 at 4000kbs bitrate
-                {"-resolution": "1280x720", "-framerate": "30.0"},  # Stream2: 1280x720 at 30fps
-                {"-resolution": "640x360", "-framerate": "30.0", "-video_bitrate": "256k"},  # Stream3: 640x360 at 30fps
-            ],
-            "-vcodec": "h264_vaapi",
-            "-vf": "format=nv12,hwupload",
-            "-input_framerate": stream.framerate, "-livestream": True
+                {"-resolution": "1280x720", "-video_bitrate": "1000k", "-c:a": "copy"},
+                {"-resolution": "1280x720", "-video_bitrate": "256k", "-c:a": "copy"},
+                         ],
+            "-input_framerate": stream.framerate,
+            "-ac": "2",
+            "-ar": "48000",
+            "-livestream": True
         }
-        streamer = StreamGear(output=f"{self.tmp}/hls_out.m3u8", format="hls", **stream_params)
+
+        streamer = StreamGear(output=f"{self.tmp}/hls_out.m3u8", format="hls", **stream_params, logging=False)
 
         while True:
             frame = stream.read()
