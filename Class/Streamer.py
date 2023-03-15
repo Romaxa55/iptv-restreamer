@@ -59,7 +59,7 @@ class Streamer(object):
             if proc.name() == PROCNAME:
                 proc.kill()
         print("Start ", stream_id)
-        stream = ffmpeg_streaming.input(self.url_path)
+        stream = ffmpeg_streaming.input(self.url_path, capture=True)
         print(stream_id)
         if not os.path.exists(self.tmp):
             makedirs(self.tmp)
@@ -73,7 +73,9 @@ class Streamer(object):
         _auto = Representation()
         hls = stream.hls(Formats.hevc())
         # hls.representations(_144p, _240p)
-        hls.representations(_144p, _auto)
+        # hls.representations(_144p, _auto)
+        hls.auto_generate_representations()
+
         hls.output(f"{self.tmp}/index.m3u8")
         print("Stop ", stream_id)
         print(self.tmp)
