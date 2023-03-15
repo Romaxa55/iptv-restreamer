@@ -1,6 +1,6 @@
 # IPTV Restreamer with Adaptive Streams
 
-This is a python based project that allows you to restream IPTV content to your own channels with adaptive streaming support. The project is hosted on Github and can be used for various purposes such as creating your own IPTV network or streaming media from your own server.
+<p> This is a python based project that allows you to restream IPTV content to your own channels with adaptive streaming support. The project is hosted on Github and can be used for various purposes such as creating your own IPTV network or streaming media from your own server. </p>
 
 ### Installation
 To use the IPTV Restreamer with Adaptive Streams, you will need to have Python installed on your system. You will also need to install the following dependencies:
