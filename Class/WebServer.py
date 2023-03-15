@@ -30,7 +30,7 @@ class WebServer:
 
         Streamer(**iptv)
 
-        m3u_file = Path(f"tmp{request.path[:-10]}hls_out.m3u8")
+        m3u_file = Path(f"tmp{request.path[:-10]}index.m3u8")
         t_end = time.time() + 60
         while time.time() < t_end:
             if m3u_file.exists():
@@ -41,7 +41,7 @@ class WebServer:
     async def videoFiles(request: web.Request) -> web.FileResponse:
         print(f"Request url: {request.path}")
         file = Path(f"tmp{request.path}")
-        t_end = time.time() + 10
+        t_end = time.time() + 20
         while time.time() < t_end:
             if file.exists():
                 return web.FileResponse(file)
@@ -92,8 +92,9 @@ class WebServer:
         self.app.middlewares.append(error_middleware)
         self.app.router.add_get('/iptv/{key}/{id}/stream_{steram:[\d]+}.m3u8', self.videoFiles)
         self.app.router.add_get('/iptv/{key}/{id}/index.m3u8', self.startStream)
-        self.app.router.add_get('/iptv/{key}/{id}/chunk-stream-{num_video:\d+}.ts', self.videoFiles)
-        self.app.router.add_get('/iptv/{key}/{id}/chunk-stream{stream:[\d]+}-{num_video:\d+}.ts', self.videoFiles)
+        self.app.router.add_get('/iptv/{key}/{id}/index_{file}.ts', self.videoFiles)
+        self.app.router.add_get('/iptv/{key}/{id}/index_{file}.m3u8', self.videoFiles)
+
 
         aiohttp_jinja2.setup(self.app,
                              loader=jinja2.FileSystemLoader('html/'))

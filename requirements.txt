@@ -10,4 +10,4 @@ msgpack_numpy
 uvloop
 aiohttp_jinja2
 opencv-python
-
+python-ffmpeg-video-streaming

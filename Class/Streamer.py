@@ -3,8 +3,8 @@ import shutil
 import threading
 import time
 from os import makedirs
-from vidgear.gears import CamGear, WriteGear
-from vidgear.gears import StreamGear
+import ffmpeg_streaming
+from ffmpeg_streaming import *
 from pathlib import Path
 
 SIGINT = False
@@ -53,32 +53,22 @@ class Streamer(object):
         global SIGINT
         global last_time
         print("Start ", stream_id)
-        stream = CamGear(self.url_path, logging=True, time_delay=0).start()
+        stream = ffmpeg_streaming.input(self.url_path)
+        print(stream_id)
         if not os.path.exists(self.tmp):
             makedirs(self.tmp)
 
-        stream_params = {
-            "-streams": [
-                {"-resolution": "1280x720", "-video_bitrate": "1000k"},
-                {"-resolution": "1280x720", "-video_bitrate": "256k"},
-                         ],
-            "-input_framerate": stream.framerate,
-            "-livestream": True
-        }
-
-        streamer = StreamGear(output=f"{self.tmp}/hls_out.m3u8", format="hls", **stream_params, logging=False)
-
-        while True:
-            frame = stream.read()
-            if frame is None:
-                break
-            if SIGINT or int(time.time() - last_time) >= TIMEOUT_NON_ACTIVE:
-                break
-            streamer.stream(frame)
-
-        stream.stop()
+        _144p = Representation(Size(256, 144), Bitrate(95 * 1024, 64 * 1024))
+        _240p = Representation(Size(426, 240), Bitrate(150 * 1024, 94 * 1024))
+        _360p = Representation(Size(640, 360), Bitrate(276 * 1024, 128 * 1024))
+        _480p = Representation(Size(854, 480), Bitrate(750 * 1024, 192 * 1024))
+        _720p = Representation(Size(1280, 720), Bitrate(2048 * 1024, 320 * 1024))
+        _1080p = Representation(Size(1920, 1080), Bitrate(4096 * 1024, 320 * 1024))
+        hls = stream.hls(Formats.hevc())
+        hls.representations(_144p, _240p)
+        # hls.representations(_144p, _240p, _360p, _480p, _720p, _1080p)
+        hls.output(f"{self.tmp}/index.m3u8")
         print("Stop ", stream_id)
         print(self.tmp)
-        if Path(self.tmp).exists():
-            shutil.rmtree(self.tmp)
-        streamer.terminate()
+        # if Path(self.tmp).exists():
+        #     shutil.rmtree(self.tmp)
