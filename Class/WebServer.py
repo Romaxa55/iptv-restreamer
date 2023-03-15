@@ -6,7 +6,7 @@ from cryptography import fernet
 from aiohttp import web
 from aiohttp_session import setup, get_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
-from app.Class.Streamer import Streamer
+from Class.Streamer import Streamer
 
 
 class WebServer:

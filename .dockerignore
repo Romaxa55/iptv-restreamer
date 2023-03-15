@@ -1,0 +1,14 @@
+# Ignore unnecessary files inside allowed directories
+# This should go after the allowed directories
+**/*~
+**/*.log
+**/.DS_Store
+**/Thumbs.db
+
+!Class/Streamer.py
+!Class/WebServer.py
+!html/error.html
+!config.json
+!main.py
+!requirements.txt
+

@@ -1,6 +1,6 @@
 FROM linuxserver/ffmpeg
 WORKDIR /app
-COPY app/ .
+COPY . .
 RUN \
     echo "**** install runtime ****" && \
     apt-get update && \
@@ -15,5 +15,6 @@ RUN \
     echo "**** install python requirements.txt ****" && \
     pip3 install -r requirements.txt
 
-EXPOSE 8000
-RUN ls
+EXPOSE 8000/tcp
+CMD ["main.py"]
+ENTRYPOINT ["/usr/bin/python3"]
