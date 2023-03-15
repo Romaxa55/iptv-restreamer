@@ -1,0 +1,19 @@
+FROM linuxserver/ffmpeg
+WORKDIR /app
+COPY app/ .
+RUN \
+    echo "**** install runtime ****" && \
+    apt-get update && \
+    apt-get install -y \
+      python3  \
+      python3-pip  \
+    && \
+    echo "**** clean up ****" && \
+    rm -rf \
+      /var/lib/apt/lists/* \
+      /var/tmp/* &&\
+    echo "**** install python requirements.txt ****" && \
+    pip3 install -r requirements.txt
+
+EXPOSE 8000
+RUN ls
