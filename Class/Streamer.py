@@ -6,7 +6,9 @@ from os import makedirs
 import ffmpeg_streaming
 from ffmpeg_streaming import *
 from pathlib import Path
+import psutil
 
+PROCNAME = "ffmpeg"
 SIGINT = False
 last_time = time.time()
 TIMEOUT_NON_ACTIVE = 60
@@ -52,6 +54,10 @@ class Streamer(object):
     def runStream(self, stream_id):
         global SIGINT
         global last_time
+        for proc in psutil.process_iter():
+            # check whether the process name matches
+            if proc.name() == PROCNAME:
+                proc.kill()
         print("Start ", stream_id)
         stream = ffmpeg_streaming.input(self.url_path)
         print(stream_id)
