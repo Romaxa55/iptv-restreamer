@@ -11,8 +11,8 @@ This is a Python-based project for IPTV restreaming with adaptive streams. It us
 ## Using Docker
 
 1. Install Docker on your machine.
-2. Build the Docker image by running `docker build -t romaxa55/iptv-restreamer` .
-3. Start the Docker container by running `docker run -p 8000:8000 romaxa55/iptv-restreamer`
+2. Build the Docker image by running `docker build -t iptv-restreamer .`
+3. Start the Docker container by running `docker run -p 8000:8000 --platform linux/arm64 romaxa55/iptv-restreamer`
 4. Download the playlist from [ilook.tv](https://ilook.tv) and replace the IP addresses in the m3u8 playlist with your server's IP address and port number (e.g. `http://localhost:8000`).
 
 ## Configuration
