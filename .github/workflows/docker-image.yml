@@ -30,9 +30,7 @@ jobs:
       run: docker run --rm -d -p 8000:8000 ${{ env.IMAGE_TAG }}
 
     - name: Install dependencies
-      run: |
-        cd iptv
-        pip install -r requirements.txt
+      run: pip install -r requirements.txt
 
     - name: Run tests
       run: pytest test_app.py -v
