@@ -14,7 +14,7 @@ RUN useradd -ms /bin/bash myuser
 USER myuser
 WORKDIR /app
 COPY . .
-RUN python3 -m venv . &&  \
+RUN python3 -m venv /opt/venv &&  \
     echo "**** install python requirements.txt ****" && \
     pip3 install -r requirements.txt
 
