@@ -15,7 +15,7 @@ RUN \
     chown -R myuser:myuser .
 USER myuser
 COPY . .
-RUN python3 -m venv /opt/venv &&  \
+RUN python3 -m venv ./venv &&  \
     echo "**** install python requirements.txt ****" && \
     pip3 install -r requirements.txt
 
