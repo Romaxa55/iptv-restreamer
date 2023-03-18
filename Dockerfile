@@ -14,7 +14,7 @@ RUN \
       /var/lib/apt/lists/* \
       /var/tmp/* && \
     echo "**** install python requirements.txt ****" && \
-    pip3 install --user myuser --no-cache-dir -r requirements.txt
+    pip3 install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 CMD ["main.py"]
