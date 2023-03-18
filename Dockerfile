@@ -18,7 +18,7 @@ USER myuser
 COPY . .
 RUN python3 -m venv ./venv &&  \
     echo "**** install python requirements.txt ****" && \
-    pip3 install --user myuser -r requirements.txt
+    pip3 install --user myuser --no-cache-dir -r requirements.txt
 
 EXPOSE 8000/tcp
 CMD ["main.py"]
