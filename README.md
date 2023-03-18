@@ -4,7 +4,7 @@
 This is a Python-based project for IPTV restreaming with adaptive streams. It uses the `python-ffmpeg-video-streaming` package and can be run in a Docker container.
 
 ## Run from public repository
-`docker run -it --rm --network host iptv-restreamer`
+`docker run -d --rm --privileged --network host romaxa55/iptv-restreamer`
 
 
 ## How to Use
