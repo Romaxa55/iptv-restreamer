@@ -27,7 +27,7 @@ jobs:
         tags: romaxa55/iptv-restreamer:latest
 
     - name: Start Docker container
-      run: docker run --rm -d -p 8000:8000 ${{ env.IMAGE_TAG }}
+      run: docker run --rm -d --network host  ${{ env.IMAGE_TAG }}
 
     - name: Install dependencies
       run: pip install -r requirements.txt
