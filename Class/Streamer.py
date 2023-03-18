@@ -1,11 +1,9 @@
 import os
-import shutil
 import threading
 import time
 from os import makedirs
 import ffmpeg_streaming
 from ffmpeg_streaming import *
-from pathlib import Path
 import psutil
 
 PROCNAME = "ffmpeg"
