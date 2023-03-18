@@ -12,7 +12,7 @@ RUN \
     rm -rf \
       /var/lib/apt/lists/* \
       /var/tmp/*
-USER user
+
 RUN echo "**** install python requirements.txt ****" && \
     pip3 install -r requirements.txt
 
