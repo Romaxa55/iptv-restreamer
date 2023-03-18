@@ -4,7 +4,7 @@
 This is a Python-based project for IPTV restreaming with adaptive streams. It uses the `python-ffmpeg-video-streaming` package and can be run in a Docker container.
 
 ## Run from public repository
-`docker run -d --rm --privileged --network host romaxa55/iptv-restreamer`
+`docker run -d --rm -p8000:8000 romaxa55/iptv-restreamer`
 
 
 ## How to Use
@@ -18,7 +18,7 @@ This is a Python-based project for IPTV restreaming with adaptive streams. It us
 
 1. Install Docker on your machine.
 2. Build the Docker image by running `docker build -t iptv-restreamer .`
-3. Start the Docker container by running `docker run -it --rm --network host iptv-restreamer`
+3. Start the Docker container by running `docker run -d --rm -p8000:8000 iptv-restreamer`
 4. Download the playlist from [ilook.tv](https://ilook.tv) and replace the IP addresses in the m3u8 playlist with your server's IP address and port number (e.g. `http://localhost:8000`).
 
 ## Configuration
@@ -27,7 +27,7 @@ The config.json file is used to configure the restreamer. Here is an example con
 ```json
 {
   "webserver": {
-    "host": "localhost",
+    "host": "0.0.0.0",
     "port": 8000
   },
   "iptv": {
