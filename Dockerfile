@@ -9,8 +9,10 @@ RUN \
     echo "**** clean up ****" && \
     rm -rf \
       /var/lib/apt/lists/* \
-      /var/tmp/*
-RUN useradd -ms /bin/bash myuser
+      /var/tmp/* && \
+    useradd -ms /bin/bash myuser && \
+    chown -R myuser:myuser path/to/virtuaelenv/
+
 USER myuser
 WORKDIR /app
 COPY . .
