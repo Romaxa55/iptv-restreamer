@@ -1,4 +1,5 @@
 FROM linuxserver/ffmpeg
+WORKDIR /app
 RUN \
     echo "**** install runtime ****" && \
     apt-get update && \
@@ -11,10 +12,8 @@ RUN \
       /var/lib/apt/lists/* \
       /var/tmp/* && \
     useradd -ms /bin/bash myuser && \
-    chown -R myuser:myuser path/to/virtuaelenv/
-
+    chown -R myuser:myuser .
 USER myuser
-WORKDIR /app
 COPY . .
 RUN python3 -m venv /opt/venv &&  \
     echo "**** install python requirements.txt ****" && \
