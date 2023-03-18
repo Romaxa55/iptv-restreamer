@@ -11,3 +11,4 @@ aiohttp_jinja2
 opencv-python
 python-ffmpeg-video-streaming
 psutil
+ffmpeg
