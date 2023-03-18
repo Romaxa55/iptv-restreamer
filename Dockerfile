@@ -12,8 +12,11 @@ RUN \
     rm -rf \
       /var/lib/apt/lists/* \
       /var/tmp/*
+RUN useradd -ms /bin/bash myuser
+USER myuser
 
-RUN echo "**** install python requirements.txt ****" && \
+RUN python3 -m venv myenv &&  \
+    echo "**** install python requirements.txt ****" && \
     pip3 install -r requirements.txt
 
 EXPOSE 8000/tcp
