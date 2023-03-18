@@ -72,7 +72,7 @@ class Streamer(object):
         _1080p = Representation(Size(1920, 1080), Bitrate(4096 * 1024, 320 * 1024))
         hls = stream.hls(Formats.hevc())
         # hls.representations(_144p, _240p)
-        hls.representations(_144p, _240p, _360p, _480p, _720p)
+        hls.representations(_360p, _480p, _720p)
         hls.output(f"{self.tmp}/index.m3u8")
         print("Stop ", stream_id)
         print(self.tmp)
