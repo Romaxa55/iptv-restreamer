@@ -16,6 +16,5 @@ RUN \
     echo "**** install python requirements.txt ****" && \
     pip3 install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
 ENTRYPOINT [""]
 CMD ["python3", "main.py"]
