@@ -10,5 +10,7 @@ uvloop
 aiohttp_jinja2
 opencv-python
 python-ffmpeg-video-streaming
-psutil
-ffmpeg
+psutil~=5.9.4
+pytest
+
+requests~=2.28.2

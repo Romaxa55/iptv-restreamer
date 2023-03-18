@@ -48,9 +48,16 @@ class WebServer:
         return web.FileResponse(file)
 
     @staticmethod
+    async def status_health(request: web.Request) -> web.Response:
+        print(f"Request url: {request.path}")
+        return web.json_response({'status': 'ok'})
+    @staticmethod
     async def handle_404(request):
         context = {'name': '404', 'text': 'PAGE NOT FOUND'}
-        return aiohttp_jinja2.render_template('error.html', request, context)
+        response = aiohttp_jinja2.render_template('error.html', request, context)
+        response.set_status(404)
+        return response
+
 
     @staticmethod
     async def handle_500(request):
@@ -94,6 +101,7 @@ class WebServer:
         self.app.router.add_get('/iptv/{key}/{id}/index.m3u8', self.startStream)
         self.app.router.add_get('/iptv/{key}/{id}/index_{file}.ts', self.videoFiles)
         self.app.router.add_get('/iptv/{key}/{id}/index_{file}.m3u8', self.videoFiles)
+        self.app.router.add_get('/status', self.status_health)
 
 
         aiohttp_jinja2.setup(self.app,
