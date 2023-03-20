@@ -66,7 +66,8 @@ class Streamer(object):
 
     def process_representation(self, video, rep):
         hls = video.hls(Formats.hevc())
-        hls.representations(rep)
+        hls.representations(*rep)
+        print(rep)
         hls.output(f"{self.tmp}/index.m3u8")
 
     def runStream(self, stream_id):
@@ -87,8 +88,12 @@ class Streamer(object):
         # Process the representations concurrently
         with ThreadPoolExecutor() as executor:
             reps = self.create_dash_representations()
-            for rep in reps:
-                executor.submit(self.process_representation, stream, rep)
+
+            # Process the first representation
+            executor.submit(self.process_representation, stream, reps[:1])
+
+            # Process the other representations concurrently
+            executor.submit(self.process_representation, stream, reps[1:])
 
         print("Stop ", stream_id)
         print(self.tmp)
