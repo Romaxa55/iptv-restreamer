@@ -61,7 +61,6 @@ class Streamer(object):
             Representation(Size(640, 360), Bitrate(276 * 1024, 128 * 1024)),
             Representation(Size(854, 480), Bitrate(750 * 1024, 192 * 1024)),
             Representation(Size(1280, 720), Bitrate(2048 * 1024, 320 * 1024)),
-            Representation(Size(1920, 1080), Bitrate(4096 * 1024, 320 * 1024)),
         ]
 
     def process_representation(self, video, rep):
