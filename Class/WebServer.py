@@ -29,13 +29,7 @@ class WebServer:
         }
 
         Streamer(**iptv)
-
-        m3u_file = Path(f"tmp{request.path[:-10]}index.m3u8")
-        t_end = time.time() + 20
-        while time.time() < t_end:
-            if m3u_file.exists():
-                return web.FileResponse(m3u_file)
-        return web.FileResponse(m3u_file)
+        return web.FileResponse("template.m3u8")
 
     @staticmethod
     async def videoFiles(request: web.Request) -> web.FileResponse:

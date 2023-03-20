@@ -1,7 +1,10 @@
 import os
+import shutil
 import threading
 import time
 from os import makedirs
+from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
 import ffmpeg_streaming
 from ffmpeg_streaming import *
 import psutil
@@ -49,6 +52,23 @@ class Streamer(object):
             except BaseException as e:
                 print(e)
 
+    @staticmethod
+    def create_dash_representations():
+        # Create DASH Representations
+        return [
+            Representation(Size(256, 144), Bitrate(95 * 1024, 64 * 1024)),
+            Representation(Size(426, 240), Bitrate(150 * 1024, 94 * 1024)),
+            Representation(Size(640, 360), Bitrate(276 * 1024, 128 * 1024)),
+            Representation(Size(854, 480), Bitrate(750 * 1024, 192 * 1024)),
+            Representation(Size(1280, 720), Bitrate(2048 * 1024, 320 * 1024)),
+            Representation(Size(1920, 1080), Bitrate(4096 * 1024, 320 * 1024)),
+        ]
+
+    def process_representation(self, video, rep):
+        hls = video.hls(Formats.hevc())
+        hls.representations(rep)
+        hls.output(f"{self.tmp}/index.m3u8")
+
     def runStream(self, stream_id):
         global SIGINT
         global last_time
@@ -56,22 +76,20 @@ class Streamer(object):
             # check whether the process name matches
             if proc.name() == PROCNAME:
                 proc.kill()
+                if Path(f"tmp").exists():
+                    shutil.rmtree("tmp")
         print("Start ", stream_id)
-        stream = ffmpeg_streaming.input(self.url_path, capture=True)
+        stream = ffmpeg_streaming.input(self.url_path)
         print(stream_id)
         if not os.path.exists(self.tmp):
             makedirs(self.tmp)
 
-        _144p = Representation(Size(256, 144), Bitrate(95 * 1024, 64 * 1024))
-        _240p = Representation(Size(426, 240), Bitrate(150 * 1024, 94 * 1024))
-        _360p = Representation(Size(640, 360), Bitrate(276 * 1024, 128 * 1024))
-        _480p = Representation(Size(854, 480), Bitrate(750 * 1024, 192 * 1024))
-        _720p = Representation(Size(1280, 720), Bitrate(2048 * 1024, 320 * 1024))
-        _1080p = Representation(Size(1920, 1080), Bitrate(4096 * 1024, 320 * 1024))
-        hls = stream.hls(Formats.hevc())
-        # hls.representations(_144p, _240p)
-        hls.representations(_360p, _480p, _720p)
-        hls.output(f"{self.tmp}/index.m3u8")
+        # Process the representations concurrently
+        with ThreadPoolExecutor() as executor:
+            reps = self.create_dash_representations()
+            for rep in reps:
+                executor.submit(self.process_representation, stream, rep)
+
         print("Stop ", stream_id)
         print(self.tmp)
         # if Path(self.tmp).exists():
