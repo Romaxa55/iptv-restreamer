@@ -35,7 +35,7 @@ class WebServer:
     async def videoFiles(request: web.Request) -> web.FileResponse:
         print(f"Request url: {request.path}")
         file = Path(f"tmp{request.path}")
-        t_end = time.time() + 2
+        t_end = time.time() + 30
         while time.time() < t_end:
             if file.exists():
                 return web.FileResponse(file)
