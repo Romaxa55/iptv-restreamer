@@ -89,10 +89,10 @@ class Streamer(object):
             reps = self.create_dash_representations()
 
             # Process the first representation
-            executor.submit(self.process_representation, stream, reps[:2])
+            executor.submit(self.process_representation, stream, reps[:1])
 
             # Process the other representations concurrently
-            executor.submit(self.process_representation, stream, reps[2:])
+            executor.submit(self.process_representation, stream, reps[1:])
 
         print("Stop ", stream_id)
         print(self.tmp)
