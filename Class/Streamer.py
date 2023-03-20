@@ -83,9 +83,10 @@ class Streamer(object):
         if not os.path.exists(self.tmp):
             makedirs(self.tmp)
 
+        reps = self.create_dash_representations()
         # Process the representations concurrently
         with ThreadPoolExecutor() as executor:
-            reps = self.create_dash_representations()
+
 
             # Process the first representation
             executor.submit(self.process_representation, stream, reps[:1])
