@@ -87,12 +87,8 @@ class Streamer(object):
         # Process the representations concurrently
         with ThreadPoolExecutor() as executor:
 
-
-            # Process the first representation
-            executor.submit(self.process_representation, stream, reps[:1])
-
             # Process the other representations concurrently
-            executor.submit(self.process_representation, stream, reps[1:])
+            executor.submit(self.process_representation, stream, reps)
 
         print("Stop ", stream_id)
         print(self.tmp)
