@@ -56,7 +56,7 @@ class Streamer(object):
     def create_dash_representations():
         # Create DASH Representations
         return [
-            Representation(Size(1280, 720), Bitrate(512 * 1024, 128 * 1024)),
+            Representation(Size(640, 360), Bitrate(512 * 1024, 128 * 1024)),
         ]
 
     def process_representation(self, video, rep):
